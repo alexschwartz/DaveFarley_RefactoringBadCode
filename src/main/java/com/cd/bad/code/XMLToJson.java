@@ -69,17 +69,17 @@ public class XMLToJson {
     public String getJson(URL url, String xPathString) throws Exception {
         MyUtil util = new MyUtil();
         Document TOCDoc = util.getDocument(url);
-        String jsonString = "[";
-
+     
         Element node = null;
         if (xPathString.equals("/")) {
-
             node = TOCDoc.getRootElement();
         } else {
             String realXPathString = pathMapping(xPathString);
             System.out.println(realXPathString);
             node = (Element) TOCDoc.selectSingleNode(realXPathString);
         }
+
+        String jsonString = "[";
 
         for (Iterator<Element> i = node.elementIterator(); i.hasNext();) {
             Element elem = (Element) i.next();
@@ -96,6 +96,7 @@ public class XMLToJson {
         System.err.println("before removing last char: " + extractLast3Chars(jsonString));
         jsonString = jsonString.substring(0, jsonString.length() - 1);
         System.err.println("after removing last char: " + extractLast3Chars(jsonString));
+        
         jsonString = jsonString.concat("]");
 
         return jsonString;
@@ -109,9 +110,14 @@ public class XMLToJson {
         String titleAttrContent = elem.attributeValue("title");
         String fileAttrContent = elem.attributeValue("file");
 
+        System.err.println("handleFolderNode: elem=" 
+            + elem + ", \n   attribs=" + elem.attributes().stream()
+                .map(attr -> ((Attribute)attr).getName())
+                .reduce((a, b) -> a + "," + b).orElse(""));
 
         var jsonString = "{";
         
+
         for (Attribute attribute : elem.attributes()) {
             String attrName = attribute.getName();
             jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
