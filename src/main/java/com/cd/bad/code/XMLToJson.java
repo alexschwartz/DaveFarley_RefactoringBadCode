@@ -7,7 +7,6 @@ import org.dom4j.Element;
 import java.net.URL;
 import java.util.*;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * fk--folder key,dk--doc key -->value is key string
@@ -129,11 +128,8 @@ public class XMLToJson {
                 if (typeContent == "history") {
                     jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fth,");
 
-                } else {
-                   throw new NotImplementedException("cannot handle types " + typeContent);
-                }
+                } 
                 break;
-
             }
 
         }
