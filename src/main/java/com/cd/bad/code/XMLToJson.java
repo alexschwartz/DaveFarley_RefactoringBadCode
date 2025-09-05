@@ -100,9 +100,9 @@ public class XMLToJson {
 
     private String handleFolderNode(String xPathString, String jsonString, Element elem) {
         List<Attribute> list = elem.attributes();
-                   String titleAttrContent = elem.attributeValue("title");
+        String titleAttrContent = elem.attributeValue("title");
 
-            String fileAttrContent = elem.attributeValue("file");
+        String fileAttrContent = elem.attributeValue("file");
 
         jsonString = jsonString.concat("{");
         for (Attribute attribute : list) {
@@ -138,9 +138,9 @@ public class XMLToJson {
     private String handleDocNode(String xPathString, String jsonString, Element elem) {
         // doc element always has "file" attribute
         List<Attribute> list = elem.attributes();
-                   String titleAttrContent = elem.attributeValue("title");
+        String titleAttrContent = elem.attributeValue("title");
 
-            String fileAttrContent = elem.attributeValue("file");
+        String fileAttrContent = elem.attributeValue("file");
 
         for (Attribute attribute : list) {
             jsonString = jsonString.concat("{");
