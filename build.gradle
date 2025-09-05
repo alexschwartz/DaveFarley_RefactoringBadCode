@@ -5,14 +5,30 @@ plugins {
 group 'cd'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile 'com.approvaltests:approvaltests:6.0.1'
-    compile group: 'org.dom4j', name: 'dom4j', version: '2.1.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'com.approvaltests:approvaltests:6.0.1'
+    implementation 'org.dom4j:dom4j:2.1.4'
 }
