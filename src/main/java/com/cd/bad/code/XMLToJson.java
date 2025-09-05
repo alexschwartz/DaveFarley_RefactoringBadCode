@@ -7,7 +7,6 @@ import org.dom4j.Element;
 import java.net.URL;
 import java.util.*;
 
-
 /**
  * fk--folder key,dk--doc key -->value is key string
  * dt--doc type,ft--folder type -->both have 19 key options:
@@ -69,7 +68,7 @@ public class XMLToJson {
     public String getJson(URL url, String xPathString) throws Exception {
         MyUtil util = new MyUtil();
         Document TOCDoc = util.getDocument(url);
-     
+
         Element node = null;
         if (xPathString.equals("/")) {
             node = TOCDoc.getRootElement();
@@ -80,20 +79,16 @@ public class XMLToJson {
         }
 
         List<String> jsonElemArray = new ArrayList<>();
-        for (Iterator<Element> i = node.elementIterator(); i.hasNext();) {
-            Element elem = (Element) i.next();
-            String eleName = elem.getName();
-
-            if (eleName == "doc") {
+        for (Element elem : node.elements()) {
+            if ("doc".equals(elem.getName())) {
                 jsonElemArray.add(handleDocNode(xPathString, elem));
-            } else if (eleName == "folder") {
+            } else {
                 jsonElemArray.add(handleFolderNode(xPathString, elem));
             }
         }
 
         String jsonString = "[" + String.join(",", jsonElemArray) + "]";
         System.err.println("final JSON: " + jsonString);
-        
 
         return jsonString;
     }
@@ -102,13 +97,12 @@ public class XMLToJson {
         String titleAttrContent = elem.attributeValue("title");
         String fileAttrContent = elem.attributeValue("file");
 
-        System.err.println("handleFolderNode: elem=" 
-            + elem + ", \n   attribs=" + elem.attributes().stream()
-                .map(attr -> ((Attribute)attr).getName())
-                .reduce((a, b) -> a + "," + b).orElse(""));
+        System.err.println("handleFolderNode: elem="
+                + elem + ", \n   attribs=" + elem.attributes().stream()
+                        .map(attr -> ((Attribute) attr).getName())
+                        .reduce((a, b) -> a + "," + b).orElse(""));
 
         var jsonString = "{";
-        
 
         for (Attribute attribute : elem.attributes()) {
             String attrName = attribute.getName();
@@ -127,7 +121,7 @@ public class XMLToJson {
                 // doc element has type "history"
                 if (typeContent == "history") {
                     jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fth,");
-                } 
+                }
                 break;
             }
 
@@ -142,9 +136,9 @@ public class XMLToJson {
 
         var jsonString = "{";
         for (Attribute attribute : elem.attributes()) {
-            
+
             String attrName = attribute.getName();
-            
+
             jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
             if (attrName.equals("key")) {
                 String keyContent = elem.attributeValue("key");
