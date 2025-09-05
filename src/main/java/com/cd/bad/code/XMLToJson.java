@@ -141,18 +141,21 @@ public class XMLToJson {
 
         for (Attribute attribute : elem.attributes()) {
             jsonString = jsonString.concat("{");
-            String attrName = attribute.getName();
-            // System.out.println("doc arribute Name : " + attrName);
+            
+         
             // each one has to have "data" line, "attr" line "state" line and "children"
             // line
             jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
-            if (attrName.equals("key")) {
+            
+            switch(attribute.getName()) {
+               case "key": 
                 String keyContent = elem.attributeValue("key");
                 jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_dk:")
                         .concat(keyContent).concat("','file':'").concat(fileAttrContent).concat("'}");
 
                 break;
-            } else if (attrName.equals("trnum")) {
+
+               case "trnum":
 
                 String trnumContent = elem.attributeValue("trnum");
                 jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_dtrn:")
