@@ -86,98 +86,107 @@ public class XMLToJson {
             String eleName = elem.getName();
             List<Attribute> list = elem.attributes();
             String titleAttrContent = elem.attributeValue("title");
-            // Boolean isFileAttr = false;
+            
             String fileAttrContent = elem.attributeValue("file");
-            // if (fileAttrContent.isEmpty() )
+            
             if (eleName == "doc") {
-                // doc element always has "file" attribute
-
-                for (Attribute attribute : list) {
-                    jsonString = jsonString.concat("{");
-                    String attrName = attribute.getName();
-                    // System.out.println("doc arribute Name : " + attrName);
-                    // each one has to have "data" line, "attr" line "state" line and "children"
-                    // line
-                    jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
-                    if (attrName.equals("key")) {
-                        String keyContent = elem.attributeValue("key");
-                        jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_dk:")
-                                .concat(keyContent).concat("','file':'").concat(fileAttrContent).concat("'}");
-
-                        break;
-                    } else if (attrName.equals("trnum")) {
-
-                        String trnumContent = elem.attributeValue("trnum");
-                        jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_dtrn:")
-                                .concat(trnumContent).concat("','file':'").concat(fileAttrContent).concat("'}");
-
-                        break;
-                    }
-                    /*
-                     * else if (attrName.equals("type"))//type attribute for doc element won't
-                     * determite what exactly the element is
-                     * {
-                     * String typeContent = elem.attributeValue("type");
-                     * //doc element has type "history"
-                     * if (typeContent == "history"){
-                     * jsonString =
-                     * jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_dth,");
-                     * }else if (typeContent == "?????"){
-                     * //any values for type attribute need to concern????
-                     * }
-                     * 
-                     * }
-                     * else if (attrName.equals("file"))
-                     * {
-                     * 
-                     * }
-                     */
-                }
-                if (hasChildren(elem)) {
-                    // state set up as "closed" and no need to set up "children" field
-                    jsonString = jsonString.concat(",'state':'closed'");
-
-                }
-                jsonString = jsonString.concat("},");
+                jsonString = handleDocNode(xPathString, jsonString, elem, list, titleAttrContent, fileAttrContent);
             }
-
             else if (eleName == "folder") {
-                jsonString = jsonString.concat("{");
-                for (Attribute attribute : list) {
-                    String attrName = attribute.getName();
-                    jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
-                    if (attrName.equals("key")) {
-                        String keyContent = elem.attributeValue("key");
-                        jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fk:")
-                                .concat(keyContent).concat("'}");
-                        if (fileAttrContent != null) {
-                            jsonString = jsonString.concat("','file':'").concat(fileAttrContent).concat("'}");
-                        }
-
-                        break;
-                    } else if (attrName.equals("type")) {
-                        String typeContent = elem.attributeValue("type");
-                        // doc element has type "history"
-                        if (typeContent == "history") {
-                            jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fth,");
-
-                        } else if (typeContent == "?????") {
-                            // any values need to concern????
-                        }
-                        break;
-
-                    }
-
-                }
-                jsonString = jsonString.concat("},");
+                jsonString = handleFolderNode(xPathString, jsonString, elem, list, titleAttrContent, fileAttrContent);
             }
             continue;
         }
-        // return list;
         jsonString = jsonString.substring(0, jsonString.length() - 1);
         jsonString = jsonString.concat("]");
-        return jsonString;
 
+        return jsonString;
+    }
+
+    private String handleFolderNode(String xPathString, String jsonString, Element elem, List<Attribute> list,
+            String titleAttrContent, String fileAttrContent) {
+        jsonString = jsonString.concat("{");
+        for (Attribute attribute : list) {
+            String attrName = attribute.getName();
+            jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
+            if (attrName.equals("key")) {
+                String keyContent = elem.attributeValue("key");
+                jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fk:")
+                        .concat(keyContent).concat("'}");
+                if (fileAttrContent != null) {
+                    jsonString = jsonString.concat("','file':'").concat(fileAttrContent).concat("'}");
+                }
+
+                break;
+            } else if (attrName.equals("type")) {
+                String typeContent = elem.attributeValue("type");
+                // doc element has type "history"
+                if (typeContent == "history") {
+                    jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fth,");
+
+                } else if (typeContent == "?????") {
+                    // any values need to concern????
+                }
+                break;
+
+            }
+
+        }
+        jsonString = jsonString.concat("},");
+        return jsonString;
+    }
+
+    private String handleDocNode(String xPathString, String jsonString, Element elem, List<Attribute> list,
+            String titleAttrContent, String fileAttrContent) {
+        // doc element always has "file" attribute
+
+        for (Attribute attribute : list) {
+            jsonString = jsonString.concat("{");
+            String attrName = attribute.getName();
+            // System.out.println("doc arribute Name : " + attrName);
+            // each one has to have "data" line, "attr" line "state" line and "children"
+            // line
+            jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
+            if (attrName.equals("key")) {
+                String keyContent = elem.attributeValue("key");
+                jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_dk:")
+                        .concat(keyContent).concat("','file':'").concat(fileAttrContent).concat("'}");
+
+                break;
+            } else if (attrName.equals("trnum")) {
+
+                String trnumContent = elem.attributeValue("trnum");
+                jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_dtrn:")
+                        .concat(trnumContent).concat("','file':'").concat(fileAttrContent).concat("'}");
+
+                break;
+            }
+            /*
+             * else if (attrName.equals("type"))//type attribute for doc element won't
+             * determite what exactly the element is
+             * {
+             * String typeContent = elem.attributeValue("type");
+             * //doc element has type "history"
+             * if (typeContent == "history"){
+             * jsonString =
+             * jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_dth,");
+             * }else if (typeContent == "?????"){
+             * //any values for type attribute need to concern????
+             * }
+             * 
+             * }
+             * else if (attrName.equals("file"))
+             * {
+             * 
+             * }
+             */
+        }
+        if (hasChildren(elem)) {
+            // state set up as "closed" and no need to set up "children" field
+            jsonString = jsonString.concat(",'state':'closed'");
+        }
+        jsonString = jsonString.concat("},");
+        return jsonString;
     }
 
     private boolean hasChildren(Element elem) {
