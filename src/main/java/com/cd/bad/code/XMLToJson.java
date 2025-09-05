@@ -98,7 +98,6 @@ public class XMLToJson {
     }
 
     private String handleFolderNode(String xPathString, Element elem) {
-        String titleAttrContent = elem.attributeValue("title");
         String fileAttrContent = elem.attributeValue("file");
 
         System.err.println("handleFolderNode: elem="
@@ -107,10 +106,12 @@ public class XMLToJson {
                         .reduce((a, b) -> a + "," + b).orElse(""));
 
         var jsonString = "{";
-
+String titleAttrContent = elem.attributeValue("title");
+        
+        jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
+            
         for (Attribute attribute : elem.attributes()) {
             String attrName = attribute.getName();
-            jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
             if (attrName.equals("key")) {
                 String keyContent = elem.attributeValue("key");
                 jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fk:")
@@ -121,9 +122,7 @@ public class XMLToJson {
 
                 break;
             } else if (attrName.equals("type")) {
-                String typeContent = elem.attributeValue("type");
-                // doc element has type "history"
-                if (typeContent == "history") {
+                if (elem.attributeValue("type") == "history") {
                     jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fth,");
                 }
                 break;
@@ -135,15 +134,16 @@ public class XMLToJson {
 
     private String handleDocNode(String xPathString, Element elem) {
         // doc element always has "file" attribute
-        String titleAttrContent = elem.attributeValue("title");
         String fileAttrContent = elem.attributeValue("file");
 
         var jsonString = "{";
+        String titleAttrContent = elem.attributeValue("title");
+        jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
+            
         for (Attribute attribute : elem.attributes()) {
 
             String attrName = attribute.getName();
 
-            jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
             if (attrName.equals("key")) {
                 String keyContent = elem.attributeValue("key");
                 jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_dk:")
