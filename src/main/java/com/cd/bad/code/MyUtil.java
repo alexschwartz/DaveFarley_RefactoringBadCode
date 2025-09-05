@@ -14,7 +14,7 @@ public class MyUtil
         Document document = null;
 
         try {
-            document = reader.read(url);
+            return reader.read(url);
         } catch (DocumentException e) {
             e.printStackTrace();
         }
