@@ -86,9 +86,9 @@ public class XMLToJson {
             String eleName = elem.getName();
 
             if (eleName == "doc") {
-                jsonString = handleDocNode(xPathString, jsonString, elem);
+                jsonString = jsonString.concat(handleDocNode(xPathString, elem));
             } else if (eleName == "folder") {
-                jsonString = handleFolderNode(xPathString, jsonString, elem);
+                jsonString = jsonString.concat(jsonString = handleFolderNode(xPathString, elem));
             }
 
             continue;
@@ -105,11 +105,13 @@ public class XMLToJson {
         return jsonString.substring(jsonString.length() - 10, jsonString.length() - 1);
     }
 
-    private String handleFolderNode(String xPathString, String jsonString, Element elem) {
+    private String handleFolderNode(String xPathString, Element elem) {
         String titleAttrContent = elem.attributeValue("title");
         String fileAttrContent = elem.attributeValue("file");
 
-        jsonString = jsonString.concat("{");
+
+        var jsonString = "{";
+        
         for (Attribute attribute : elem.attributes()) {
             String attrName = attribute.getName();
             jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
@@ -127,25 +129,24 @@ public class XMLToJson {
                 // doc element has type "history"
                 if (typeContent == "history") {
                     jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fth,");
-
                 } 
                 break;
             }
 
         }
-        jsonString = jsonString.concat("},");
-        return jsonString;
+        return jsonString.concat("},");
     }
 
-    private String handleDocNode(String xPathString, String jsonString, Element elem) {
+    private String handleDocNode(String xPathString, Element elem) {
         // doc element always has "file" attribute
         String titleAttrContent = elem.attributeValue("title");
         String fileAttrContent = elem.attributeValue("file");
 
+        var jsonString = "{";
         for (Attribute attribute : elem.attributes()) {
-            jsonString = jsonString.concat("{");
+            
             String attrName = attribute.getName();
-  
+            
             jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
             if (attrName.equals("key")) {
                 String keyContent = elem.attributeValue("key");
@@ -165,8 +166,7 @@ public class XMLToJson {
         if (hasChildren(elem)) {
             jsonString = jsonString.concat(",'state':'closed'");
         }
-        jsonString = jsonString.concat("},");
-        return jsonString;
+        return jsonString.concat("},");
     }
 
     private boolean hasChildren(Element elem) {
