@@ -55,8 +55,7 @@ public class XMLToJson {
         pathMap = Collections.unmodifiableMap(aMap);
     }
 
-    MyUtil util = new MyUtil();
-
+    
     /*
      * @param url the path to TOC.xml
      * 
@@ -68,7 +67,8 @@ public class XMLToJson {
      */
     @SuppressWarnings({ "unchecked" })
     public String getJson(URL url, String xPathString) throws Exception {
-        Document TOCDoc = util.getDocument(url);
+        MyUtil util = new MyUtil();
+Document TOCDoc = util.getDocument(url);
         String jsonString = "[";
 
         Element node = null;
