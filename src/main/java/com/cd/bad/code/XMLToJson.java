@@ -81,12 +81,10 @@ public class XMLToJson {
             node = (Element) TOCDoc.selectSingleNode(realXPathString);
         }
 
-        return handleElements(xPathString, jsonString, node);
-    }
-
-    private String handleElements(String xPathString, String jsonString, Element node) {
         for (Iterator<Element> i = node.elementIterator(); i.hasNext();) {
             Element elem = (Element) i.next();
+            String eleName = elem.getName();
+
             if (eleName == "doc") {
                 jsonString = handleDocNode(xPathString, jsonString, elem);
             } else if (eleName == "folder") {
@@ -106,28 +104,27 @@ public class XMLToJson {
 
         jsonString = jsonString.concat("{");
         for (Attribute attribute : elem.attributes()) {
-            jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
             String attrName = attribute.getName();
-            switch (attrName) {
-                case "key":
-                    String keyContent = elem.attributeValue("key");
-                    jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fk:")
-                            .concat(keyContent).concat("'}");
-                    if (fileAttrContent != null) {
-                        jsonString = jsonString.concat("','file':'").concat(fileAttrContent).concat("'}");
-                    }
+            jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
+            if (attrName.equals("key")) {
+                String keyContent = elem.attributeValue("key");
+                jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fk:")
+                        .concat(keyContent).concat("'}");
+                if (fileAttrContent != null) {
+                    jsonString = jsonString.concat("','file':'").concat(fileAttrContent).concat("'}");
+                }
 
-                    break;
-                case "type":
-                    String typeContent = elem.attributeValue("type");
-                    // doc element has type "history"
-                    if (typeContent == "history") {
-                        jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fth,");
+                break;
+            } else if (attrName.equals("type")) {
+                String typeContent = elem.attributeValue("type");
+                // doc element has type "history"
+                if (typeContent == "history") {
+                    jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fth,");
 
-                    } else if (typeContent == "?????") {
-                        // any values need to concern????
-                    }
-                    break;
+                } else if (typeContent == "?????") {
+                    // any values need to concern????
+                }
+                break;
 
             }
 
@@ -138,12 +135,11 @@ public class XMLToJson {
 
     private String handleDocNode(String xPathString, String jsonString, Element elem) {
         // doc element always has "file" attribute
-        List<Attribute> list = elem.attributes();
         String titleAttrContent = elem.attributeValue("title");
 
         String fileAttrContent = elem.attributeValue("file");
 
-        for (Attribute attribute : list) {
+        for (Attribute attribute : elem.attributes()) {
             jsonString = jsonString.concat("{");
             String attrName = attribute.getName();
             // System.out.println("doc arribute Name : " + attrName);
