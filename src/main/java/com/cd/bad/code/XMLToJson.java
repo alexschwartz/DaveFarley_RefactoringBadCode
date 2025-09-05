@@ -98,10 +98,6 @@ public class XMLToJson {
         return jsonString;
     }
 
-    private String extractLast3Chars(String jsonString) {
-        return jsonString.substring(jsonString.length() - 10, jsonString.length() - 1);
-    }
-
     private String handleFolderNode(String xPathString, Element elem) {
         String titleAttrContent = elem.attributeValue("title");
         String fileAttrContent = elem.attributeValue("file");
