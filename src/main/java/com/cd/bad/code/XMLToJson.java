@@ -140,15 +140,12 @@ public class XMLToJson {
     private String handleDocNode(String xPathString, String jsonString, Element elem) {
         // doc element always has "file" attribute
         String titleAttrContent = elem.attributeValue("title");
-
         String fileAttrContent = elem.attributeValue("file");
 
         for (Attribute attribute : elem.attributes()) {
             jsonString = jsonString.concat("{");
             String attrName = attribute.getName();
-            // System.out.println("doc arribute Name : " + attrName);
-            // each one has to have "data" line, "attr" line "state" line and "children"
-            // line
+  
             jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
             if (attrName.equals("key")) {
                 String keyContent = elem.attributeValue("key");
@@ -164,28 +161,8 @@ public class XMLToJson {
 
                 break;
             }
-            /*
-             * else if (attrName.equals("type"))//type attribute for doc element won't
-             * determite what exactly the element is
-             * {
-             * String typeContent = elem.attributeValue("type");
-             * //doc element has type "history"
-             * if (typeContent == "history"){
-             * jsonString =
-             * jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_dth,");
-             * }else if (typeContent == "?????"){
-             * //any values for type attribute need to concern????
-             * }
-             * 
-             * }
-             * else if (attrName.equals("file"))
-             * {
-             * 
-             * }
-             */
         }
         if (hasChildren(elem)) {
-            // state set up as "closed" and no need to set up "children" field
             jsonString = jsonString.concat(",'state':'closed'");
         }
         jsonString = jsonString.concat("},");
