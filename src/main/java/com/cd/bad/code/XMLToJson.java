@@ -84,15 +84,14 @@ public class XMLToJson {
         for (Iterator<Element> i = node.elementIterator(); i.hasNext();) {
             Element elem = (Element) i.next();
             String eleName = elem.getName();
-            List<Attribute> list = elem.attributes();
+
             String titleAttrContent = elem.attributeValue("title");
-            
+
             String fileAttrContent = elem.attributeValue("file");
-            
+
             if (eleName == "doc") {
-                jsonString = handleDocNode(xPathString, jsonString, elem, list, titleAttrContent, fileAttrContent);
-            }
-            else if (eleName == "folder") {
+                jsonString = handleDocNode(xPathString, jsonString, elem, titleAttrContent, fileAttrContent);
+            } else if (eleName == "folder") {
                 jsonString = handleFolderNode(xPathString, jsonString, elem, titleAttrContent, fileAttrContent);
             }
             continue;
@@ -105,7 +104,7 @@ public class XMLToJson {
 
     private String handleFolderNode(String xPathString, String jsonString, Element elem,
             String titleAttrContent, String fileAttrContent) {
-        List<Attribute> list = elem.attributes();        
+        List<Attribute> list = elem.attributes();
         jsonString = jsonString.concat("{");
         for (Attribute attribute : list) {
             String attrName = attribute.getName();
@@ -137,10 +136,10 @@ public class XMLToJson {
         return jsonString;
     }
 
-    private String handleDocNode(String xPathString, String jsonString, Element elem, List<Attribute> list,
+    private String handleDocNode(String xPathString, String jsonString, Element elem,
             String titleAttrContent, String fileAttrContent) {
         // doc element always has "file" attribute
-
+        List<Attribute> list = elem.attributes();
         for (Attribute attribute : list) {
             jsonString = jsonString.concat("{");
             String attrName = attribute.getName();
