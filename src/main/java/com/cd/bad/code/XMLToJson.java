@@ -93,7 +93,7 @@ public class XMLToJson {
                 jsonString = handleDocNode(xPathString, jsonString, elem, list, titleAttrContent, fileAttrContent);
             }
             else if (eleName == "folder") {
-                jsonString = handleFolderNode(xPathString, jsonString, elem, list, titleAttrContent, fileAttrContent);
+                jsonString = handleFolderNode(xPathString, jsonString, elem, titleAttrContent, fileAttrContent);
             }
             continue;
         }
@@ -103,8 +103,9 @@ public class XMLToJson {
         return jsonString;
     }
 
-    private String handleFolderNode(String xPathString, String jsonString, Element elem, List<Attribute> list,
+    private String handleFolderNode(String xPathString, String jsonString, Element elem,
             String titleAttrContent, String fileAttrContent) {
+        List<Attribute> list = elem.attributes();        
         jsonString = jsonString.concat("{");
         for (Attribute attribute : list) {
             String attrName = attribute.getName();
