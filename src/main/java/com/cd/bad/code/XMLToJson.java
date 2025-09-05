@@ -244,11 +244,11 @@ Document TOCDoc = util.getDocument(url);
      *
      */
     public String pathMapping(String shortXPath) throws Exception {
-        String tagetString = null;
+        String targetString = null;
         if (shortXPath.equals("")) {
-            tagetString = "//toc";
+            targetString = "//toc";
         } else {
-            tagetString = "//";
+            targetString = "//";
         }
 
         int newStart = 0;
@@ -262,17 +262,17 @@ Document TOCDoc = util.getDocument(url);
             String keyString = "";// not necessary key, might be type attribute
             segString = shortXPath.substring(newStart, shortXPath.indexOf("_", newStart));
             newStart = shortXPath.indexOf("_", newStart) + 1;// new start search point
-            // System.out.println(newStart);
+            
             if (segString.indexOf(":") > 0) {
                 keyValueSepPos = segString.indexOf(":");
                 keyString = segString.substring(0, keyValueSepPos);
                 valueString = segString.substring(keyValueSepPos + 1);
                 if (pathMap.get(keyString).length() > 0) {
-                    tagetString = tagetString.concat(pathMap.get(keyString));
+                    targetString = targetString.concat(pathMap.get(keyString));
                 } else {
                     throw new Exception("no mapping found");
                 }
-                tagetString = tagetString.concat("='").concat(valueString).concat("']/");
+                targetString = targetString.concat("='").concat(valueString).concat("']/");
             }
         }
         // this is for scenerio either no "_" or sub string after "_"
@@ -283,21 +283,19 @@ Document TOCDoc = util.getDocument(url);
             String lastKeyString = segString.substring(0, lastKeyValueSepPos);
             String lastValueString = segString.substring(lastKeyValueSepPos + 1);
             if (pathMap.get(lastKeyString).length() > 0) {
-                tagetString = tagetString.concat(pathMap.get(lastKeyString));
+                targetString = targetString.concat(pathMap.get(lastKeyString));
             } else {
                 throw new Exception("no mapping found");
             }
-            tagetString = tagetString.concat("='").concat(lastValueString).concat("']");
+            targetString = targetString.concat("='").concat(lastValueString).concat("']");
         }
-        return tagetString;
+        return targetString;
 
     }
 
     public static void main(String[] args) throws Exception {
         XMLToJson x2j = new XMLToJson();
-        String test = "fk:AMM24_fk:AMM24-FM";
-
-        test = "";
+        String test = "";
         System.out.println(x2j.getJson(new URL("http://localhost:8080/WebNavSpring/q400/amm/toc.xml"), test));
         // System.out.println(x2j.pathMapping(test));
 
