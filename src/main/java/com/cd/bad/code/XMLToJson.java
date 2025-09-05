@@ -85,14 +85,10 @@ public class XMLToJson {
             Element elem = (Element) i.next();
             String eleName = elem.getName();
 
-            String titleAttrContent = elem.attributeValue("title");
-
-            String fileAttrContent = elem.attributeValue("file");
-
             if (eleName == "doc") {
-                jsonString = handleDocNode(xPathString, jsonString, elem, titleAttrContent, fileAttrContent);
+                jsonString = handleDocNode(xPathString, jsonString, elem);
             } else if (eleName == "folder") {
-                jsonString = handleFolderNode(xPathString, jsonString, elem, titleAttrContent, fileAttrContent);
+                jsonString = handleFolderNode(xPathString, jsonString, elem);
             }
             continue;
         }
@@ -102,9 +98,12 @@ public class XMLToJson {
         return jsonString;
     }
 
-    private String handleFolderNode(String xPathString, String jsonString, Element elem,
-            String titleAttrContent, String fileAttrContent) {
+    private String handleFolderNode(String xPathString, String jsonString, Element elem) {
         List<Attribute> list = elem.attributes();
+                   String titleAttrContent = elem.attributeValue("title");
+
+            String fileAttrContent = elem.attributeValue("file");
+
         jsonString = jsonString.concat("{");
         for (Attribute attribute : list) {
             String attrName = attribute.getName();
@@ -136,10 +135,13 @@ public class XMLToJson {
         return jsonString;
     }
 
-    private String handleDocNode(String xPathString, String jsonString, Element elem,
-            String titleAttrContent, String fileAttrContent) {
+    private String handleDocNode(String xPathString, String jsonString, Element elem) {
         // doc element always has "file" attribute
         List<Attribute> list = elem.attributes();
+                   String titleAttrContent = elem.attributeValue("title");
+
+            String fileAttrContent = elem.attributeValue("file");
+
         for (Attribute attribute : list) {
             jsonString = jsonString.concat("{");
             String attrName = attribute.getName();
