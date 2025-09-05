@@ -79,25 +79,21 @@ public class XMLToJson {
             node = (Element) TOCDoc.selectSingleNode(realXPathString);
         }
 
-        String jsonString = "[";
-
+        List<String> jsonElemArray = new ArrayList<>();
         for (Iterator<Element> i = node.elementIterator(); i.hasNext();) {
             Element elem = (Element) i.next();
             String eleName = elem.getName();
 
             if (eleName == "doc") {
-                jsonString = jsonString.concat(handleDocNode(xPathString, elem));
+                jsonElemArray.add(handleDocNode(xPathString, elem));
             } else if (eleName == "folder") {
-                jsonString = jsonString.concat(jsonString = handleFolderNode(xPathString, elem));
+                jsonElemArray.add(handleFolderNode(xPathString, elem));
             }
-
-            continue;
         }
-        System.err.println("before removing last char: " + extractLast3Chars(jsonString));
-        jsonString = jsonString.substring(0, jsonString.length() - 1);
-        System.err.println("after removing last char: " + extractLast3Chars(jsonString));
+
+        String jsonString = "[" + String.join(",", jsonElemArray) + "]";
+        System.err.println("final JSON: " + jsonString);
         
-        jsonString = jsonString.concat("]");
 
         return jsonString;
     }
@@ -140,7 +136,7 @@ public class XMLToJson {
             }
 
         }
-        return jsonString.concat("},");
+        return jsonString.concat("}");
     }
 
     private String handleDocNode(String xPathString, Element elem) {
