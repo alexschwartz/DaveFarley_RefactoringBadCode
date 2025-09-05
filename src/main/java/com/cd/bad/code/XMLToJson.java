@@ -78,6 +78,10 @@ public class XMLToJson {
             node = (Element) TOCDoc.selectSingleNode(realXPathString);
         }
 
+        return getJsonString(xPathString, node);
+    }
+
+    private String getJsonString(String xPathString, Element node) {
         List<String> jsonElemArray = new ArrayList<>();
         for (Element elem : node.elements()) {
             if ("doc".equals(elem.getName())) {
