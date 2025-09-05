@@ -1,0 +1,22 @@
+{
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-14",
+            "path": "/opt/homebrew/opt/openjdk@21"
+        }
+    ],
+    "java.home": "/opt/homebrew/opt/openjdk@21",
+    "java.jdt.ls.java.home": "/opt/homebrew/opt/openjdk@21",
+    "java.import.gradle.enabled": true,
+    "java.import.gradle.wrapper.enabled": true,
+    "java.import.gradle.java.home": "/opt/homebrew/opt/openjdk@21",
+    "java.test.config": [
+        {
+            "name": "RefactoringBadCode",
+            "workingDirectory": "${workspaceFolder}",
+            "classPaths": ["$Auto"],
+            "sourcePaths": ["${workspaceFolder}/src/test/java"]
+        }
+    ],
+    "java.debug.settings.onBuildFailureProceed": true
+}

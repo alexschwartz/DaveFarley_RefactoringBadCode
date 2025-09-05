@@ -80,7 +80,7 @@ public class XMLToJson
             System.out.println(realXPathString);
             node = (Element) TOCDoc.selectSingleNode(realXPathString);
         }
-        //List<Element>  li = node.elements();
+        git 
         for (Iterator<Element> i = node.elementIterator(); i.hasNext();)
         {
             Element elem = (Element) i.next();
