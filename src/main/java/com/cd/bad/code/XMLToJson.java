@@ -172,7 +172,7 @@ public class XMLToJson {
         if (hasChildren(elem)) {
             jsonString = jsonString.concat(",'state':'closed'");
         }
-        return jsonString.concat("},");
+        return jsonString.concat("}");
     }
 
     private boolean hasChildren(Element elem) {
