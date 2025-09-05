@@ -8,17 +8,13 @@ import java.net.URL;
 
 public class MyUtil
 {
-    public Document getDocument(URL url)
-    {
-        SAXReader reader = new SAXReader();
-        Document document = null;
-
+    public Document getDocument(URL url) {
         try {
+            SAXReader reader = new SAXReader();
             return reader.read(url);
         } catch (DocumentException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
-        return document;
     }
 }
