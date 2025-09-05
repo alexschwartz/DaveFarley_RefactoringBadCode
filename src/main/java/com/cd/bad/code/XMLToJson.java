@@ -55,7 +55,6 @@ public class XMLToJson {
         pathMap = Collections.unmodifiableMap(aMap);
     }
 
-    
     /*
      * @param url the path to TOC.xml
      * 
@@ -68,7 +67,7 @@ public class XMLToJson {
     @SuppressWarnings({ "unchecked" })
     public String getJson(URL url, String xPathString) throws Exception {
         MyUtil util = new MyUtil();
-Document TOCDoc = util.getDocument(url);
+        Document TOCDoc = util.getDocument(url);
         String jsonString = "[";
 
         Element node = null;
@@ -90,12 +89,19 @@ Document TOCDoc = util.getDocument(url);
             } else if (eleName == "folder") {
                 jsonString = handleFolderNode(xPathString, jsonString, elem);
             }
+
             continue;
         }
+        System.err.println("before removing last char: " + extractLast3Chars(jsonString));
         jsonString = jsonString.substring(0, jsonString.length() - 1);
+        System.err.println("after removing last char: " + extractLast3Chars(jsonString));
         jsonString = jsonString.concat("]");
 
         return jsonString;
+    }
+
+    private String extractLast3Chars(String jsonString) {
+        return jsonString.substring(jsonString.length() - 10, jsonString.length() - 1);
     }
 
     private String handleFolderNode(String xPathString, String jsonString, Element elem) {
@@ -262,7 +268,7 @@ Document TOCDoc = util.getDocument(url);
             String keyString = "";// not necessary key, might be type attribute
             segString = shortXPath.substring(newStart, shortXPath.indexOf("_", newStart));
             newStart = shortXPath.indexOf("_", newStart) + 1;// new start search point
-            
+
             if (segString.indexOf(":") > 0) {
                 keyValueSepPos = segString.indexOf(":");
                 keyString = segString.substring(0, keyValueSepPos);
@@ -297,7 +303,5 @@ Document TOCDoc = util.getDocument(url);
         XMLToJson x2j = new XMLToJson();
         String test = "";
         System.out.println(x2j.getJson(new URL("http://localhost:8080/WebNavSpring/q400/amm/toc.xml"), test));
-        // System.out.println(x2j.pathMapping(test));
-
     }
 }
