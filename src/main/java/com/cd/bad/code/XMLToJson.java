@@ -53,7 +53,7 @@ public class XMLToJson
         pathMap = Collections.unmodifiableMap(aMap);
     }
 
-    Util util = new Util();
+    MyUtil util = new MyUtil();
 
     /*
      * @param url the path to TOC.xml
