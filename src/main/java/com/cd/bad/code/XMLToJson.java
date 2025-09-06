@@ -134,8 +134,7 @@ String titleAttrContent = elem.attributeValue("title");
 
     private String handleDocNode(String xPathString, Element elem) {
         // doc element always has "file" attribute
-        String fileAttrContent = elem.attributeValue("file");
-
+      
         var jsonString = "{";
         String titleAttrContent = elem.attributeValue("title");
         jsonString = jsonString.concat("'data':'").concat(titleAttrContent).concat("',");
@@ -145,27 +144,35 @@ String titleAttrContent = elem.attributeValue("title");
             String attrName = attribute.getName();
 
             if (attrName.equals("key")) {
-                String keyContent = elem.attributeValue("key");
-                jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_dk:")
-                        .concat(keyContent).concat("','file':'").concat(fileAttrContent).concat("'}");
 
-                break;
+                jsonString = appendAttributeRecord(xPathString, elem, jsonString, "key", "dk");
+                   break;
             } else if (attrName.equals("trnum")) {
 
-                String trnumContent = elem.attributeValue("trnum");
-                jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_dtrn:")
-                        .concat(trnumContent).concat("','file':'").concat(fileAttrContent).concat("'}");
+                jsonString = appendAttributeRecord(xPathString, elem, jsonString, "trnum", "dtrn");
 
                 break;
             }
         }
         if (hasChildren(elem)) {
-            jsonString = addJsonAttribute(jsonString, 'state', 'closed');
+            jsonString = appendJsonAttribute(jsonString, "state", "closed");
         }
         return jsonString.concat("}");
     }
 
-    private String addJsonAttribute(String jsonString, String key, String value) {
+    private String appendAttributeRecord(String xPathString, Element elem, String jsonString, String key, String idPostfix) {
+        String content = elem.attributeValue(key);
+        String fileAttrContent = elem.attributeValue("file");
+
+        return jsonString
+                .concat("'attr':{'id':'").concat(xPathString).concat("_" + idPostfix + ":")
+                .concat(content)
+                .concat("','file':'").concat(fileAttrContent)
+                .concat("'}");
+                
+    }
+
+    private String appendJsonAttribute(String jsonString, String key, String value) {
         return jsonString.concat(",'" + key + "':'" + value + "'");
     }
 
