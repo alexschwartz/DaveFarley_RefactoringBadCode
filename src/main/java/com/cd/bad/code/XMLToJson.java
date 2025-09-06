@@ -113,6 +113,7 @@ String titleAttrContent = elem.attributeValue("title");
         for (Attribute attribute : elem.attributes()) {
             String attrName = attribute.getName();
             if (attrName.equals("key")) {
+                
                 String keyContent = elem.attributeValue("key");
                 jsonString = jsonString.concat("'attr':{'id':'").concat(xPathString).concat("_fk:")
                         .concat(keyContent).concat("'}");
@@ -145,11 +146,11 @@ String titleAttrContent = elem.attributeValue("title");
 
             if (attrName.equals("key")) {
 
-                jsonString = appendAttributeRecord(xPathString, elem, jsonString, "key", "dk");
+                jsonString = jsonString.concat(createJsonAttributeRecordString(xPathString, elem, jsonString, "key", "dk"));
                    break;
             } else if (attrName.equals("trnum")) {
 
-                jsonString = appendAttributeRecord(xPathString, elem, jsonString, "trnum", "dtrn");
+                jsonString = jsonString.concat(createJsonAttributeRecordString(xPathString, elem, "trnum", "dtrn"));
 
                 break;
             }
@@ -160,11 +161,11 @@ String titleAttrContent = elem.attributeValue("title");
         return jsonString.concat("}");
     }
 
-    private String appendAttributeRecord(String xPathString, Element elem, String jsonString, String key, String idPostfix) {
+    private String createJsonAttributeRecordString(String xPathString, Element elem, String key, String idPostfix) {
         String content = elem.attributeValue(key);
         String fileAttrContent = elem.attributeValue("file");
 
-        return jsonString
+        return ""
                 .concat("'attr':{'id':'").concat(xPathString).concat("_" + idPostfix + ":")
                 .concat(content)
                 .concat("','file':'").concat(fileAttrContent)
