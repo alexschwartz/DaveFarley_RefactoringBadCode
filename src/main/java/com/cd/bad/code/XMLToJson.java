@@ -160,9 +160,13 @@ String titleAttrContent = elem.attributeValue("title");
             }
         }
         if (hasChildren(elem)) {
-            jsonString = jsonString.concat(",'state':'closed'");
+            jsonString = addJsonAttribute(jsonString, 'state', 'closed');
         }
         return jsonString.concat("}");
+    }
+
+    private String addJsonAttribute(String jsonString, String key, String value) {
+        return jsonString.concat(",'" + key + "':'" + value + "'");
     }
 
     private boolean hasChildren(Element elem) {
