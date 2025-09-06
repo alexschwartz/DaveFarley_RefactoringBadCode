@@ -146,7 +146,7 @@ String titleAttrContent = elem.attributeValue("title");
 
             if (attrName.equals("key")) {
 
-                jsonString = jsonString.concat(createJsonAttributeRecordString(xPathString, elem, jsonString, "key", "dk"));
+                jsonString = jsonString.concat(createJsonAttributeRecordString(xPathString, elem, "key", "dk"));
                    break;
             } else if (attrName.equals("trnum")) {
 
